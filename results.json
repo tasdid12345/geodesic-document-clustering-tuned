@@ -1,0 +1,30 @@
+{
+  "question": "Does a validation-tuned geodesic (kNN-graph shortest-path) distance clustering beat a fixed-k geodesic baseline at grouping news documents by topic?",
+  "method": "TF-IDF -> kNN graph -> shortest-path distances -> average-linkage clustering with the true number of classes; test split evaluated once.",
+  "dataset": {
+    "name": "20 Newsgroups (4 categories, headers/footers/quotes removed)",
+    "source_url": "https://ndownloader.figshare.com/files/5975967",
+    "n_rows": 3734,
+    "n_train": 2613,
+    "n_test": 1121,
+    "same_as_paper": false,
+    "baseline_is_papers_method": false
+  },
+  "metric_name": "adjusted_rand_index (test)",
+  "higher_is_better": true,
+  "baseline": "Geodesic clustering with fixed k=10 and Euclidean edge weights.",
+  "improved": "Geodesic clustering with k selected from {5,10,15,20} on a validation split of the development set, and cosine-distance edge weights.",
+  "metrics": {
+    "baseline_score": 0.00010274885712552255,
+    "improved_score": 0.4882148087056866,
+    "improvement": 0.4881120598485611,
+    "baseline_nmi": 0.005391468356039413,
+    "improved_nmi": 0.4736318854876309,
+    "improved_selected_k": 20,
+    "validation_ari_k5": 0.3277084980744938,
+    "validation_ari_k10": 0.36721111107875665,
+    "validation_ari_k15": 0.3457580235692357,
+    "validation_ari_k20": 0.41205458627491903
+  },
+  "notes": "Clustering is deterministic given the split, so a single run is reported; seed 42 controls all splits and subsampling. The test split is one 30% holdout, so differences of a few points may be split noise. k is chosen by ARI on a validation split inside the development set, never on the test set. The graph is built over the test documents only (transductive). fetch_20newsgroups does not expose a request timeout, so the retry/backoff wrapper is the only download safeguard. The paper's own result is not stated and it does not use this dataset."
+}
