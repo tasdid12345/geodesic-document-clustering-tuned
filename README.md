@@ -21,6 +21,27 @@ python analysis.py
 
 Results are written to results.json (and a chart to figures/).
 
+## Results (latest run)
+
+On the 20 Newsgroups 4-category test split (1,121 documents), adjusted Rand index rose from 0.0001 for a standard geodesic-distance clustering with a fixed neighbourhood size to 0.488 for the validation-tuned version (k chosen from {5,10,15,20}, cosine edges), from a single run on one holdout.
+
+| Metric | Value |
+|---|---|
+| baseline_score | 0.0001027 |
+| improved_score | 0.4882 |
+| improvement | 0.4881 |
+| baseline_nmi | 0.005391 |
+| improved_nmi | 0.4736 |
+| improved_selected_k | 20 |
+| validation_ari_k5 | 0.3277 |
+| validation_ari_k10 | 0.3672 |
+| validation_ari_k15 | 0.3458 |
+| validation_ari_k20 | 0.4121 |
+
+Run on 2026-10-20. Full output: [results.json](results.json) · [run.log](run.log)
+
+Notes: Clustering is deterministic given the split, so a single run is reported; seed 42 controls all splits and subsampling. The test split is one 30% holdout, so differences of a few points may be split noise. k is chosen by ARI on a validation split inside the development set, never on the test set. The graph is built over the test documents only (transductive). fetch_20newsgroups does not expose a request timeout, so the retry/backoff wrapper is the only download safeguard. The paper's own result is not stated and it does not use this dataset.
+
 ## Reference
 
 This project is motivated by the following paper:
